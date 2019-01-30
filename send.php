@@ -4,12 +4,12 @@ class Send {
 	private $error;
 
 	private $config = [
-		'mail_type'         => 'SMTP',
-		'mail_host'         => '',
-		'mail_port'         => 25,
-		'mail_user'         => '',
-		'mail_pass'         => '',
-		'mail_timeout'      => 10,
+		// 'mail_type'         => 'SMTP',
+		// 'mail_host'         => '',
+		// 'mail_port'         => 25,
+		// 'mail_user'         => '',
+		// 'mail_pass'         => '',
+		// 'mail_timeout'      => 10,
 
 		'sender_to_mail'    => '',
 		'sender_from_mail'  => '',
@@ -19,9 +19,9 @@ class Send {
 	];
 
 	private $not_required = [
-		'mail_type',
-		'mail_port',
-		'mail_timeout'
+		// 'mail_type',
+		// 'mail_port',
+		// 'mail_timeout'
 	];
 
 	public function index() {
@@ -61,22 +61,18 @@ class Send {
 	}
 
 	private function sendOut() {
-		require_once('system/mail.php');
-
-		$mail = new Mail();
-		$mail->protocol   = strtolower($this->config['mail_type']);
-		$mail->hostname   = strtolower($this->config['mail_host']);
-		$mail->username   = strtolower($this->config['mail_user']);
-		$mail->password   = $this->config['mail_pass'];
-		$mail->port       = (int)$this->config['mail_port'];
-		$mail->timeout    = (int)$this->config['mail_timeout'];
-
-		$mail->setTo(strtolower($this->config['sender_to_mail']));
-		$mail->setFrom(strtolower($this->config['sender_from_mail']));
-		$mail->setSender($this->config['sender_author']);
-		$mail->setSubject(html_entity_decode($this->config['sender_subject'], ENT_QUOTES, 'UTF-8'));
-		$mail->setHtml($this->config['sender_content']);
-		$mail->send();
+		try {
+		    $message = new Message();
+		    $message->setSender(strtolower($this->config['sender_from_mail']));
+		    $message->addTo(strtolower($this->config['sender_to_mail']));
+		    $message->setSubject(html_entity_decode($this->config['sender_subject'], ENT_QUOTES, 'UTF-8'));
+		    $message->setHtmlBody($this->config['sender_content']);
+		    // $message->addAttachment('image.jpg', $image_data, $image_content_id);
+		    $message->send();
+		    echo '[ok]';
+		} catch (InvalidArgumentException $e) {
+		    echo '[error]';
+		}
 	}
 }
 

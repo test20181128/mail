@@ -1,4 +1,6 @@
 <?php
+use google\appengine\api\mail\Message;
+
 class Send {
 	private $token = '57744c1def01da4f91cb3153927c6234';
 	private $error;

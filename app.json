@@ -1,0 +1,6 @@
+{
+  "name": "test app on heroku",
+  "description": "my first app",
+  "repository": "https://github.com/test20181128/mail",
+  "addons": []
+}
